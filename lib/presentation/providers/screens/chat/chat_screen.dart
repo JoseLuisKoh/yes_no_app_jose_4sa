@@ -12,7 +12,7 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Albedo 💗'),
+        title: const Text('Isa💗'),
         leading: const Padding(
           padding: EdgeInsets.all(1.0),
           child: CircleAvatar(

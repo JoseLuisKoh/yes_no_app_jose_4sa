@@ -21,13 +21,15 @@ class ChatProvider extends ChangeNotifier {
     print("Mensaje enviado: $message");
 
     if (text.endsWith('?')) {
-      amloReply();
+      albeditoreplay();
     }
+    //notifica si algo de provier cambio de estado
     notifyListeners();
+    //mueve el scroll hasta el ultimo mensaje recibido
     moveScrollToBottom();
   }
 
-  Future<void> amloReply() async {
+  Future<void> albeditoreplay() async {
     final AlbeditoMessage = await getYesNoanswer.getAnswer();
     message.add(AlbeditoMessage);
 

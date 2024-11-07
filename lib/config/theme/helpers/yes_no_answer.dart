@@ -8,5 +8,7 @@ class GetYesNoanswer {
     final response = await _dio.get('https://yesno.wtf/api');
     final yesnomodel = YesNoModel.fromJsonMap(response.data);
     return yesnomodel.toMessageEntitie();
+
+    //generador de error
   }
 }
