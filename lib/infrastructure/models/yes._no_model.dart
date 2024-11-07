@@ -22,5 +22,6 @@ class YesNoModel {
   Message toMessageEntitie() => Message(
       text: answer == 'yes' ? 'Si' : 'No',
       fromWho: FromWho.albeditos,
-      imageUrl: image);
+      imageUrl: image,
+      content: '');
 }

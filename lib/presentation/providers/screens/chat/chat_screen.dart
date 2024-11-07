@@ -28,6 +28,7 @@ class ChatScreen extends StatelessWidget {
 class _chatview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    //pedrile al widget que este pendiente de todos los cambios
     final chatprovider = context.watch<ChatProvider>();
     return SafeArea(
       child: Padding(

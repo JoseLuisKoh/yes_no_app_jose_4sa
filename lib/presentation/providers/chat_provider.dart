@@ -6,12 +6,20 @@ class ChatProvider extends ChangeNotifier {
   final ScrollController chatScrollcontroler = ScrollController();
   final GetYesNoanswer getYesNoanswer = GetYesNoanswer();
   List<Message> message = [
-    Message(text: 'Buen dia', fromWho: FromWho.me),
-    Message(text: 'hola', fromWho: FromWho.me)
+    Message(text: 'Buen dia', fromWho: FromWho.mine, content: ''),
+    Message(text: 'hola', fromWho: FromWho.mine, content: '')
   ];
   Future<void> sendMessage(String text) async {
-    final newMessage = Message(text: text, fromWho: FromWho.me);
+    final newMessage = Message(text: text, fromWho: FromWho.me, content: '');
+    if (text.trim().isEmpty) {
+      print("No se puede enviar un mensaje vacio.");
+
+      return;
+    }
     message.add(newMessage);
+    moveScrollToBottom();
+    print("Mensaje enviado: $message");
+
     if (text.endsWith('?')) {
       amloReply();
     }
@@ -22,6 +30,7 @@ class ChatProvider extends ChangeNotifier {
   Future<void> amloReply() async {
     final AlbeditoMessage = await getYesNoanswer.getAnswer();
     message.add(AlbeditoMessage);
+
     notifyListeners();
     moveScrollToBottom();
   }
@@ -32,5 +41,7 @@ class ChatProvider extends ChangeNotifier {
         chatScrollcontroler.position.maxScrollExtent,
         duration: const Duration(seconds: 1),
         curve: Curves.easeOut);
+    print("numero de mensajes");
+    print(message.length);
   }
 }
