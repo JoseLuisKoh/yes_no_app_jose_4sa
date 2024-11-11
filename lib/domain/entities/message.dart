@@ -9,9 +9,10 @@ class Message {
   final String? imageUrl;
   final FromWho fromWho;
 
-  Message(
-      {required this.text,
-      this.imageUrl,
-      required this.fromWho,
-      required String content});
+  Message({
+    required this.text,
+    this.imageUrl,
+    required this.fromWho,
+    required String content,
+  });
 }

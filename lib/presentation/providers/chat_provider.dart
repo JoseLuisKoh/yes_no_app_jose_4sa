@@ -6,11 +6,23 @@ class ChatProvider extends ChangeNotifier {
   final ScrollController chatScrollcontroler = ScrollController();
   final GetYesNoanswer getYesNoanswer = GetYesNoanswer();
   List<Message> message = [
-    Message(text: 'Buen dia', fromWho: FromWho.mine, content: ''),
-    Message(text: 'hola', fromWho: FromWho.mine, content: '')
+    Message(
+      text: 'Buen dia',
+      fromWho: FromWho.me,
+      content: '',
+    ),
+    Message(
+      text: 'hola',
+      fromWho: FromWho.me,
+      content: '',
+    )
   ];
   Future<void> sendMessage(String text) async {
-    final newMessage = Message(text: text, fromWho: FromWho.me, content: '');
+    final newMessage = Message(
+      text: text,
+      fromWho: FromWho.me,
+      content: '',
+    );
     if (text.trim().isEmpty) {
       print("No se puede enviar un mensaje vacio.");
 

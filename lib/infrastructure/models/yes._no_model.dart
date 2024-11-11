@@ -20,7 +20,11 @@ class YesNoModel {
         "image": image,
       };
   Message toMessageEntitie() => Message(
-      text: answer == 'yes' ? 'Si' : 'No',
+      text: answer == 'yes'
+          ? 'Sí'
+          : answer == 'No'
+              ? 'no'
+              : 'Quizas',
       fromWho: FromWho.albeditos,
       imageUrl: image,
       content: '');
