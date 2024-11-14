@@ -3,6 +3,8 @@ import 'package:flutter_application_1/domain/entities/message.dart';
 import 'package:flutter_application_1/infrastructure/models/yes._no_model.dart';
 
 class GetYesNoanswer {
+  //Se crea instancia(objeto) de la clase Dio
+  //Para manejar las peticiones HTTP
   final _dio = Dio();
   Future<Message> getAnswer() async {
     //Almacenar la peticion GET en una variable
@@ -10,7 +12,7 @@ class GetYesNoanswer {
     //Almacenar la data de la respuesta en una variable
     final yesnomodel = YesNoModel.fromJsonMap(response.data);
     //Devolver la instancia de "message" creada en el modelo
-    return yesnomodel.toMessageEntitie();
+    return yesnomodel.toMessageEntity();
 
     //generador de error
   }

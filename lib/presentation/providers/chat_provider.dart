@@ -3,59 +3,60 @@ import 'package:flutter_application_1/config/theme/helpers/yes_no_answer.dart';
 import 'package:flutter_application_1/domain/entities/message.dart';
 
 class ChatProvider extends ChangeNotifier {
-  final ScrollController chatScrollcontroler = ScrollController();
-  final GetYesNoanswer getYesNoanswer = GetYesNoanswer();
-  List<Message> message = [
-    Message(
-      text: 'Buen dia',
-      fromWho: FromWho.me,
-      content: '',
-    ),
-    Message(
-      text: 'hola',
-      fromWho: FromWho.me,
-      content: '',
-    )
-  ];
+  // Controlador para manejar la posición del scroll
+  final ScrollController chatScrollController = ScrollController();
+  // Instancia de la clase GetYesNoAnswer
+  final GetYesNoanswer getYesNoAnswer = GetYesNoanswer();
+
+  List<Message> messageList = [];
+
+  // Variable para la hora de envío del mensaje
+  DateTime lastMessageTime = DateTime.now();
+
+  // Enviar un mensaje
   Future<void> sendMessage(String text) async {
-    final newMessage = Message(
-      text: text,
-      fromWho: FromWho.me,
-      content: '',
-    );
-    if (text.trim().isEmpty) {
-      print("No se puede enviar un mensaje vacio.");
+    // Evita que se mande mensaje vacío
+    if (text.trim().isEmpty) return;
 
-      return;
-    }
-    message.add(newMessage);
-    moveScrollToBottom();
-    print("Mensaje enviado: $message");
+    // Avanza unos minutos en la última hora del mensaje
+    lastMessageTime = lastMessageTime.add(const Duration(minutes: 1));
 
+    // El mensaje siempre va a ser 'me' porque yo lo envío
+    final newMessage = Message(text: text, fromWho: FromWho.me);
+    // Agrega el nuevo mensaje a la lista
+    messageList.add(newMessage);
+    notifyListeners(); // Notifica a los listeners sobre el cambio en el estado
+
+    // Respuesta automática si el mensaje termina con '?'
     if (text.endsWith('?')) {
-      albeditoreplay();
+      await herReply();
     }
-    //notifica si algo de provier cambio de estado
-    notifyListeners();
-    //mueve el scroll hasta el ultimo mensaje recibido
-    moveScrollToBottom();
+
+    // Mueve el scroll al último mensaje
+    await moveScrollToBottom();
   }
 
-  Future<void> albeditoreplay() async {
-    final AlbeditoMessage = await getYesNoanswer.getAnswer();
-    message.add(AlbeditoMessage);
+  // Función para recibir una respuesta
+  Future<void> herReply() async {
+    // Obtener el mensaje de la petición
+    final herMessage = await getYesNoAnswer.getAnswer();
+    // Añadir el mensaje de respuesta a la lista
+    messageList.add(herMessage);
+    notifyListeners(); // Notifica a los listeners sobre el cambio en el estado
 
-    notifyListeners();
-    moveScrollToBottom();
+    // Mueve el scroll al último mensaje
+    await moveScrollToBottom();
   }
 
-  void moveScrollToBottom() {
-    chatScrollcontroler.animateTo(
-        //extender el scroll lo maximo que se mueva
-        chatScrollcontroler.position.maxScrollExtent,
-        duration: const Duration(seconds: 1),
-        curve: Curves.easeOut);
-    print("numero de mensajes");
-    print(message.length);
+  // Mover el scroll al último mensaje
+  Future<void> moveScrollToBottom() async {
+    await Future.delayed(const Duration(
+        milliseconds: 100)); // Breve retraso para asegurar el desplazamiento
+
+    chatScrollController.animateTo(
+      chatScrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
   }
 }

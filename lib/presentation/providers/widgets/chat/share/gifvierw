@@ -1,0 +1,49 @@
+import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+
+class GifViewer extends StatefulWidget {
+  @override
+  _GifViewerState createState() => _GifViewerState();
+}
+
+class _GifViewerState extends State<GifViewer> {
+  String? gifUrl;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchGif();
+  }
+
+  Future<void> fetchGif() async {
+    try {
+      final response = await Dio().get('https://yesno.wtf/api');
+      setState(() {
+        gifUrl = response.data['image'];
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Error fetching GIF: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Visor de GIF'),
+      ),
+      body: Center(
+        child: isLoading
+            ? CircularProgressIndicator()
+            : (gifUrl != null
+                ? Image.network(gifUrl!)
+                : Text('Error loading GIF')),
+      ),
+    );
+  }
+}
